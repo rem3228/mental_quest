@@ -92,7 +92,8 @@ function third_room() {
     if ($choice == '1') {
         echo "Вы смотрите в правое зеркало и видите себя. Все в порядке." . PHP_EOL;
         $player_score += 30; // Увеличение очков
-        echo "Поздравляем, вы завершили начальную часть игры!" . PHP_EOL;
+        echo "Вы переходите в следующую комнату..." . PHP_EOL;
+        fourth_room(); // Переход в четвертую комнату
     } elseif ($choice == '2') {
         echo "Вы смотрите в левое зеркало, и оно разбивается. Вы теряете 1 жизнь." . PHP_EOL;
         $player_lives--; // Потеря жизни
@@ -105,6 +106,47 @@ function third_room() {
         echo "Неправильный выбор. Попробуйте снова." . PHP_EOL;
         third_room(); // Повторяем комнату
     }
+}
+
+// Четвертая комната
+function fourth_room() {
+    global $player_lives, $player_score;
+
+    echo "Вы оказались в комнате с надписью на стене: 'Решите уравнение: 3 + x = 7'. Найдите x." . PHP_EOL;
+    echo "Введите ответ: ";
+
+    $answer = trim(fgets(STDIN));
+
+    if ($answer == '4') {
+        echo "Правильно! Вы нашли решение. Ваши очки увеличиваются." . PHP_EOL;
+        $player_score += 40;
+        end_game(); // Переход к финалу игры
+    } else {
+        echo "Неправильно! Вы теряете 1 жизнь." . PHP_EOL;
+        $player_lives--; // Потеря жизни
+        if ($player_lives > 0) {
+            fourth_room(); // Повторяем комнату
+        } else {
+            game_over();
+        }
+    }
+}
+
+// Конец игры
+function end_game() {
+    global $player_score;
+    
+    echo "Поздравляем! Вы прошли все испытания." . PHP_EOL;
+
+    if ($player_score >= 100) {
+        echo "Победа! Вы завершили игру с высоким результатом!" . PHP_EOL;
+    } elseif ($player_score >= 50) {
+        echo "Нейтральная концовка. Вам удалось выжить, но можно было бы и лучше." . PHP_EOL;
+    } else {
+        echo "Проигрыш. Вы выжили, но ваши результаты не впечатляют." . PHP_EOL;
+    }
+
+    exit;
 }
 
 // Функция завершения игры
